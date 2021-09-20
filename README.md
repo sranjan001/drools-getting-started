@@ -1,0 +1,1 @@
+# drools-getting-started

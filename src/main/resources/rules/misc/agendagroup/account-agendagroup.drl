@@ -1,0 +1,26 @@
+package com.vmware.drools.rules;
+
+import com.vmware.drools.misc.agendagroup.Account;
+import com.vmware.drools.misc.agendagroup.AccountPeriod;
+
+rule "Increase balance for credits"
+    agenda-group "calculation"
+    when
+      $ap : AccountPeriod()
+      $acc : Account( $accountNo: accountNo )
+    then
+      $acc.setBalance( $acc.getBalance() + 10);
+      $ap.setStartDate(2001);
+      System.out.println("Increase balance: " + $accountNo);
+end
+
+rule "Print balance for AccountPeriod"
+  agenda-group "report"
+    when
+      $ap : AccountPeriod()
+      $acc : Account()
+    then
+      System.out.println( "Report: " + $acc.getAccountNo() +
+                          " - " + $acc.getBalance() +" - " + $ap.getStartDate());
+
+end

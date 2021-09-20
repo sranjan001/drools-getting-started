@@ -1,0 +1,38 @@
+package com.vmware.drools.rules;
+
+import com.vmware.drools.misc.ordering.MyProduct;
+
+rule "Offer for Diamond"
+	when
+		productObject: MyProduct(type=="diamond")
+	then
+		productObject.setDiscount(15);
+end
+
+rule "Offer for Gold"
+salience 2
+	when
+		productObject: MyProduct(type=="gold")
+	then
+		productObject.setDiscount(productObject.getDiscount() + 5);
+		System.out.println("Offer for Gold");
+end
+
+rule "Offer for Gold on Festival"
+salience 3
+	when
+		productObject: MyProduct(type=="gold") && MyProduct(event=="sale")
+	then
+		productObject.setDiscount(productObject.getDiscount() + 5);
+		System.out.println("Offer for Gold on Festival");
+end
+
+rule "if customer is platinum"
+salience 1
+no-loop
+	when
+		productObject: MyProduct(buyer == "platinum")
+	then
+		System.out.println("This is platinum customer double the discount");
+		update(productObject)
+end

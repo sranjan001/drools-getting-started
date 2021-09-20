@@ -1,0 +1,39 @@
+package com.vmware.drools.rules;
+
+import com.vmware.drools.application.Applicant
+import com.vmware.drools.config.Utility
+import com.vmware.drools.config.Utility;
+
+global com.vmware.drools.application.SuggestedRole suggestedRole;
+
+dialect  "mvel"
+
+rule "Suggest Manager Role"
+    salience 100
+    when
+        Applicant(experienceInYears > 10)
+        Applicant(currentSalary > 1000000 && currentSalary <= 2500000)
+    then
+        suggestedRole.setRole("Manager");
+        Utility.helper(drools);
+end
+
+rule "Suggest Senior developer Role"
+    salience 50
+    when
+        Applicant(experienceInYears > 5 && experienceInYears <= 10)
+        Applicant(currentSalary > 500000 && currentSalary <= 1500000)
+    then
+        Utility.helper(drools);
+        suggestedRole.setRole("Senior developer");
+end
+
+rule "Suggest Developer Role"
+    salience 300
+    when
+        Applicant(experienceInYears > 0 && experienceInYears <= 5)
+        Applicant(currentSalary > 200000 && currentSalary <= 1000000)
+    then
+        Utility.helper(drools);
+        suggestedRole.setRole("Developer");
+end

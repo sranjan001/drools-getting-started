@@ -1,0 +1,38 @@
+package com.vmware.drools.rules;
+
+import com.vmware.drools.misc.agendagroup.Account
+import com.vmware.drools.misc.Lookup
+
+rule "Contains Rule - Personal"
+    when
+        Account(types contains "personal")
+    then
+        System.out.println("Personal Contains rule -----");
+end
+
+rule "Contains Rule - Saving"
+    when
+        Account(types contains "saving")
+    then
+        System.out.println("Saving Contains rule -----");
+end
+
+
+rule "In Rule Valid Status"
+    when
+        lookup: Lookup()
+        Account(  lookup.statusTypes contains status )
+    then
+        System.out.println("In valid status rule ----- " + drools.getRule().getName());
+end
+
+rule "set lookup data"
+    salience 50000
+    when
+      lookup: Lookup()
+    then
+       lookup.setStatusTypes(new String[]{"Active", "Draft", "Closed"});
+       lookup.setAccountTypes(new String[]{"personal", "saving"});
+       System.out.println("set lookup data ...");
+       update(lookup)
+end
